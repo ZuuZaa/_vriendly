@@ -24,13 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'x!=_=g)3kz4w*pt&+*h=32ku0=wnopu^=-&y@6w6amln-sr@me'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x!=_=g)3kz4w*pt&+*h=32ku0=wnopu^=-&y@6w6amln-sr@me') 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=config('DATABASE_URL')
-#     )
-# DATABASES['default'] = dj_database_url.parse('postgres://...', conn_max_age=600)
+DEBUG = False
+DATABASES = { 'default' : dj_database_url.config()}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'Vriendly.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # DATABASES = {
