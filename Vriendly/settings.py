@@ -26,6 +26,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x!=_=g)3kz4w*pt&+*h=32ku0=wnop
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 DATABASES = { 'default' : dj_database_url.config()}
+DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -87,12 +89,12 @@ WSGI_APPLICATION = 'Vriendly.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # DATABASES = {
@@ -105,7 +107,22 @@ DATABASES = {
 #         'PORT': '5432',
 #     }
 # }
-
+DATABASES = {
+    'default': {
+        'DATABASE_URL':'postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj',
+        'HEROKU_POSTGRESQL_BLUE_URL': 'postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj',
+        'HEROKU_POSTGRESQL_COBALT_URL': 'postgres://tnkbjxcfngpzwc:afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2@ec2-52-21-247-176.compute-1.amazonaws.com:5432/ddt4pvssqluu8k',
+        'DISABLE_COLLECTSTATIC': '1',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'vriendly',
+        'USER': 'tnkbjxcfngpzwc',
+        'PASSWORD': 'afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2',
+        'HOST': 'ec2-52-21-247-176.compute-1.amazonaws.com',
+        'PORT': '5432',
+        'Heroku CLI': 'heroku pg:psql postgresql-clean-47158 --app vriendly',
+        'URI': 'postgres://tnkbjxcfngpzwc:afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2@ec2-52-21-247-176.compute-1.amazonaws.com:5432/ddt4pvssqluu8k'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
