@@ -1,0 +1,1 @@
+web: gunicorn Vriendly.wsgi --log-file -
