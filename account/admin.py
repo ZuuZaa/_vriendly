@@ -6,8 +6,6 @@ from account.models import Account
 
 
 class AccountAdmin(BaseUserAdmin):
-    # form = UserChangeForm
-    # add_form = UserCreationForm
 
     list_display = ('email', 'first_name', 'last_name', 'status', 'date_of_birth', 'is_staff',  'is_superuser')
     list_filter = ('status',)
