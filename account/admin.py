@@ -3,8 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from account.models import Account
 
-
-
+@admin.register(Account)
 class AccountAdmin(BaseUserAdmin):
 
     list_display = ('email', 'first_name', 'last_name', 'status', 'date_of_birth', 'is_staff',  'is_superuser')
@@ -29,4 +28,8 @@ class AccountAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 
-admin.site.register(Account, AccountAdmin)
+# @admin.register(Verification)
+# class Verification_Admin(admin.ModelAdmin):
+
+#     list_display = ['user','token','expire_date','create_date']
+#     readonly_fields = ['token','expire_date','create_date']

@@ -5,26 +5,28 @@
 
 
 {% block body %}
-<div class="col-md-8 col-sm-12 mx-auto mt-3">
-    <div class="card ">
-        <div class="card-body">
-            <div class="h3">Update Your Info</div>
-            <form method="post">
-                {% csrf_token %}
-                {% for field in profile_edit_form %}
-                <div class="form-group">
-                    <label for="{{field.id_for_label}}">{{ field.label_tag }}</label>
-                    {{ field|add_class:"form-control"}}
-                    {% if field.help_text %}
-                    <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
+<div class="row">
+    <div class="col-md-8 col-sm-12 mx-auto mt-3">
+        <div class="card ">
+            <div class="card-body">
+                <div class="h3">Update Your Info</div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in profile_edit_form %}
+                    <div class="form-group">
+                        <label for="{{field.id_for_label}}">{{ field.label_tag }}</label>
+                        {{ field|add_class:"form-control"}}
+                        {% if field.help_text %}
+                        <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endfor %}
-                </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-info btn-block">Edit Your Info</button>
-            </form>
+                    <button type="submit" class="btn btn-info btn-block">Edit Your Info</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

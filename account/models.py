@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.conf import settings
 
 from account.managers import AccountManager
 from account.choices import STATUS_CHOICES
-
+from account.tasks import generate_token
 
 class Account(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=150,unique=True)
@@ -29,3 +30,13 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+# class Verification(models.Model):
+
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+#     token = models.CharField(max_length=120, default=generate_token)
+#     expire_date = models.BooleanField(default=False)
+#     create_date = models.DateTimeField(default=timezone.now)
+
+#     def __str__(self):
+#         return f"{self.user} {self.token}"
