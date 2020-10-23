@@ -32,7 +32,7 @@ def register_view(request):
 			current_site = get_current_site(request)
 			domain = current_site.domain
 			token = account_activation_token.make_token(user)
-			link = f"localhost:8000/user/activate/{user.id}/{token}"
+			link = f"{domain}/user/activate/{user.id}/{token}"
 			messages.info(request, mark_safe(f"<p>Hi, {user.first_name}.</p><p>Activate your account from link, please.</p><p><a href={link}>{link}</a></p>"))
 			return redirect('home')
 		else:
