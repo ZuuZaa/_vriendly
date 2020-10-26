@@ -31,10 +31,10 @@ def register_view(request):
 			current_site = get_current_site(request)
 			domain = current_site.domain
 			token = account_activation_token.make_token(user)
-			if settings.DEBUG:
-				link = f"localhost:8000/user/activate/{user.id}/{token}"
-			else:
-				link = f"https://vriendly.herokuapp.com/user/activate/{user.id}/{token}"
+			# if settings.DEBUG:
+			# 	link = f"localhost:8000/user/activate/{user.id}/{token}"
+			# else:
+			link = f"https://vriendly.herokuapp.com/user/activate/{user.id}/{token}"
 			messages.info(request, mark_safe(f"<p>Hi, {user.first_name}.</p><p>Activate your account from link, please.</p><p><a href={link}>{link}</a></p>"))
 			return redirect('home')
 		else:
@@ -98,10 +98,10 @@ def password_reset_view(request):
 				user = None
 			if user is not None:
 				token = account_activation_token.make_token(user)
-				if settings.DEBUG:
-					link = f"localhost:8000/user/password/{user.id}/{token}"
-				else:
-					link = f"https://vriendly.herokuapp.com/user/password/{user.id}/{token}"
+				# if settings.DEBUG:
+				# 	link = f"localhost:8000/user/password/{user.id}/{token}"
+				# else:
+				link = f"https://vriendly.herokuapp.com/user/password/{user.id}/{token}"
 				messages.info(request, mark_safe(f"<p>Hi, {user.first_name}.</p><p>Reset your password from link below, please.</p><p><a href={link}>{link}</a></p>"))
 					# subject = "Password Reset Requested"
 					# email_template_name = "main/password/password_reset_email.txt"
