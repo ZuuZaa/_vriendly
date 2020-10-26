@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 
@@ -9,7 +9,8 @@ from django.db import IntegrityError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from .tokens import account_activation_token
 from django.template.loader import render_to_string
-
+from django.conf import settings
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 
 from account.models import Account
 from account.forms import (
@@ -17,10 +18,8 @@ from account.forms import (
 				AccountAuthenticationForm,
 				AccountUpdate
 )
-#from .models import Verification
 
-
-# Create your views here.
+# --------------- REGISTER ------------
 def register_view(request):
 	context = {}
 	if request.POST:
@@ -32,7 +31,10 @@ def register_view(request):
 			current_site = get_current_site(request)
 			domain = current_site.domain
 			token = account_activation_token.make_token(user)
-			link = f"https://vriendly.herokuapp.com/user/activate/{user.id}/{token}"
+			if settings.DEBUG:
+				link = f"localhost:8000/user/activate/{user.id}/{token}"
+			else:
+				link = f"https://vriendly.herokuapp.com/user/activate/{user.id}/{token}"
 			messages.info(request, mark_safe(f"<p>Hi, {user.first_name}.</p><p>Activate your account from link, please.</p><p><a href={link}>{link}</a></p>"))
 			return redirect('home')
 		else:
@@ -41,7 +43,6 @@ def register_view(request):
 		form = RegistrationForm()
 		context['register_form'] = form
 	return render(request,'account/register.html', context)
-
 
 def activate_view(request, uid, token):
     try:
@@ -60,13 +61,12 @@ def activate_view(request, uid, token):
         return render(request, 'activation_sent.html')
 
 
+# --------------- LOG IN, LOG OUT ------------
 def logout_view(request):
 	logout(request)
 	return redirect('home')
 
-
 def login_view(request):
-
 	context = {}
 	user = request.user
 	if user.is_authenticated: 
@@ -84,10 +84,79 @@ def login_view(request):
 		form = AccountAuthenticationForm()
 	context['login_form'] = form
 	return render(request, "account/login.html", context)
-    
 
+
+# --------------- PASSWORD CHANGE ------------
+def password_reset_view(request):
+	if request.method == "POST":
+		form = PasswordResetForm(request.POST)
+		if form.is_valid():
+			email = form.cleaned_data['email']
+			try:
+				user = Account.objects.filter(email=email).last()
+			except (TypeError, ValueError, OverflowError, user.DoesNotExist):
+				user = None
+			if user is not None:
+				token = account_activation_token.make_token(user)
+				if settings.DEBUG:
+					link = f"localhost:8000/user/password/{user.id}/{token}"
+				else:
+					link = f"https://vriendly.herokuapp.com/user/password/{user.id}/{token}"
+				messages.info(request, mark_safe(f"<p>Hi, {user.first_name}.</p><p>Reset your password from link below, please.</p><p><a href={link}>{link}</a></p>"))
+					# subject = "Password Reset Requested"
+					# email_template_name = "main/password/password_reset_email.txt"
+					# c = {
+					# "email":user.email,
+					# 'domain':'127.0.0.1:8000',
+					# 'site_name': 'Website',
+					# "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+					# "user": user,
+					# 'token': default_token_generator.make_token(user),
+					# 'protocol': 'http',
+					# }
+					# email = render_to_string(email_template_name, c)
+					# try:
+					# 	send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+					# except BadHeaderError:
+					# 	return HttpResponse('Invalid header found.')
+				return redirect ("password_reset_done")
+	else:
+		form = PasswordResetForm()
+	return render(request, 'account/password_reset.html', {'password_reset_form': form})
+
+def password_reset_done_view(request):
+	return render(request, 'account/password_reset_done.html')
+
+def password_confirm_view(request, uid, token):
+	try:
+		user = Account.objects.get(pk=uid)
+	except (TypeError, ValueError, OverflowError, user.DoesNotExist):
+		user = None
+	context = {}
+    # checking if the user exists, if the token is valid.
+	if user is not None and account_activation_token.check_token(user, token):
+		if request.method == 'POST':
+			form = SetPasswordForm(request.user, request.POST)
+			if form.is_valid():
+				new_password = form.cleaned_data['new_password1']
+				user.set_password(new_password)
+				user.save()
+				login(request, user) 
+				messages.success(request, f'{user.first_name}, your password was successfully updated!')
+				return redirect('home')
+			else:
+				messages.error(request, 'Please correct the error below.')
+		else:
+			form = SetPasswordForm(request.user)
+		context['password_confirm_form'] = form
+	return render(request, 'account/password_reset_confirm.html', context)
+
+def password_reset_complete_view(request):
+	return render(request, 'account/password_reset_complete.html')
+
+
+# --------------- PROFILE ------------
 def profile_view(request):
-
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
@@ -95,9 +164,7 @@ def profile_view(request):
 		context = {'user':user}
 		return render(request, 'account/profile.html', context)
 
-
 def profile_edit_view(request):
-
 	if not request.user.is_authenticated:
 		return redirect("login")
 	context = {}

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 
 
 from account.models import Account
@@ -44,22 +44,7 @@ class AccountUpdate(forms.ModelForm):
         fields = [
             'first_name',
             'last_name',
-            'email',
             'status',
             'date_of_birth'
         ]
 
-
-
-# class UserChangeForm(forms.ModelForm):
-#     password = ReadOnlyPasswordHashField()
-
-#     class Meta:
-#         model = Account
-#         fields = ('email', 'first_name', 'last_name', 'status', 'date_of_birth', 'password', 'is_active', 'is_superuser')
-
-#     def clean_password(self):
-#         # Regardless of what the user provides, return the initial value.
-#         # This is done here, rather than on the field, because the
-#         # field does not have access to the initial value
-#         return self.initial["password"]
