@@ -37,8 +37,6 @@
         {% if users %}
         {% for user in users %}
         <p><a href="{% url 'user_profile' user.id %}">{{user.email}}</a></p>
-        {% empty %}
-        user is not found
         {% endfor %}
         {% endif %}
     </div>
