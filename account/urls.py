@@ -8,6 +8,7 @@ from account.views import (
             password_reset_done_view,
             password_confirm_view,
             profile_view,
+            user_profile_view,
             profile_edit_view,
 )
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path('password/<int:uid>/<str:token>', password_confirm_view, name='password_confirm'),
 
     path('profile', profile_view, name='profile'),
-    path('profile/edit', profile_edit_view, name='profile_edit')
+    path('profile/edit', profile_edit_view, name='profile_edit'),
+    path('profile/<int:uid>', user_profile_view, name='user_profile'),
 ]

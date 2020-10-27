@@ -161,6 +161,16 @@ def profile_view(request):
 		context = {'user':user}
 		return render(request, 'account/profile.html', context)
 
+def user_profile_view(request, uid):
+	try:
+		profile = Account.objects.get(pk=uid)
+	except (TypeError, ValueError, OverflowError, profile.DoesNotExist):
+		profile = None
+	context = {}
+	if profile is not None:
+		context['profile'] = profile
+	return render(request, 'account/profile_view.html', context)
+	
 def profile_edit_view(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
