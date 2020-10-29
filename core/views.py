@@ -1,12 +1,18 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django_ip_geolocation.decorators import with_ip_geolocation
 
 from account.models import Account
 from core.forms import SearchUserForm
 
-# Create your views here.
+
+@with_ip_geolocation
 def home(request):
     context = {}
+
+
+# proceed with city
+    #user_ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
     if request.POST:
         form = SearchUserForm(request.POST)
         if form.is_valid():
@@ -20,4 +26,6 @@ def home(request):
         form = SearchUserForm()  
     context['search_user_form'] = form
     context['count'] = Account.objects.count()
+    context['location'] = request.geolocation
+    
     return render(request, 'core/index.html', context)
