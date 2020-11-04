@@ -15,7 +15,7 @@ import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,8 +26,14 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x!=_=g)3kz4w*pt&+*h=32ku0=wnop
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 DATABASES = { 'default' : dj_database_url.config()}
-DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
-
+# DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
 
     'widget_tweaks',
     'rest_framework',
@@ -83,6 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Vriendly.wsgi.application'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -184,7 +192,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, 'static'),
+]
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
