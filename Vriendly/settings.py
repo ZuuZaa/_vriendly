@@ -15,7 +15,6 @@ import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,14 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x!=_=g)3kz4w*pt&+*h=32ku0=wnop
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 DATABASES = { 'default' : dj_database_url.config()}
-# DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,46 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Vriendly.wsgi.application'
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'vriendly',
-#         'USER': 'vriendly_user',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-# DATABASES = {
-#     'default': {
-#         'DATABASE_URL':'postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj',
-#         'HEROKU_POSTGRESQL_BLUE_URL': 'postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj',
-#         'HEROKU_POSTGRESQL_COBALT_URL': 'postgres://tnkbjxcfngpzwc:afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2@ec2-52-21-247-176.compute-1.amazonaws.com:5432/ddt4pvssqluu8k',
-#         'DISABLE_COLLECTSTATIC': '1',
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'vriendly',
-#         'USER': 'tnkbjxcfngpzwc',
-#         'PASSWORD': 'afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2',
-#         'HOST': 'ec2-52-21-247-176.compute-1.amazonaws.com',
-#         'PORT': '5432',
-#         'Heroku CLI': 'heroku pg:psql postgresql-clean-47158 --app vriendly',
-#         'URI': 'postgres://tnkbjxcfngpzwc:afb55bf086dbac79676b9603ec2a5187027452105cb043b8d5dbedfb5399b3f2@ec2-52-21-247-176.compute-1.amazonaws.com:5432/ddt4pvssqluu8k'
-#     }
-# }
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -154,25 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Email Confirmation
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# MAILER_EMAIL_BACKEND = EMAIL_BACKEND
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'zumbaghirova@gmail.com'
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_USE_SSL = True
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'zumbaghirova@gmail.com'
-# EMAIL_HOST_PASSWORD = 'meamoreme1'
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -191,17 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, 'static'),
-]
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
