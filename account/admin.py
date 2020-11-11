@@ -6,19 +6,19 @@ from account.models import Account
 @admin.register(Account)
 class AccountAdmin(BaseUserAdmin):
 
-    list_display = ('email', 'first_name', 'last_name', 'status', 'date_of_birth', 'is_staff',  'is_superuser')
+    list_display = ('email', 'first_name', 'last_name', 'status', 'date_of_birth', 'is_staff', 'is_active', 'is_superuser')
     list_filter = ('status',)
     readonly_fields = ('date_joined','last_login')
 
     fieldsets = (
-        (None, {'fields': ('email', 'is_staff', 'is_superuser', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'status', 'date_of_birth')}),
+        (None, {'fields': ('email', 'is_active', 'is_staff', 'is_superuser', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'status', 'country', 'date_of_birth')}),
         ('Groups', {'fields': ('groups',)}),
         ('Permissions', {'fields': ('user_permissions',)}),
     )
     add_fieldsets = (
-        (None, {'fields': ('email', 'is_staff', 'is_superuser', 'password1', 'password2')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'status', 'date_of_birth')}),
+        (None, {'fields': ('email', 'is_active', 'is_staff', 'is_superuser', 'password1', 'password2')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'status', 'country', 'date_of_birth')}),
         ('Groups', {'fields': ('groups',)}),
         ('Permissions', {'fields': ('user_permissions',)}),
     )

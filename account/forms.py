@@ -45,6 +45,7 @@ class AccountUpdate(forms.ModelForm):
             'first_name',
             'last_name',
             'status',
-            'date_of_birth'
+            'date_of_birth',
+            'country',
         ]
 
