@@ -19,7 +19,7 @@ class AccountAdmin(BaseUserAdmin):
     )
     add_fieldsets = (
         ('Personal info', {'fields': ('email', 'first_name', 'last_name', 'status', 'country', 'date_of_birth', 'password1', 'password2')}),
-        ('Activity', {'fields': ('is_active', 'is_staff', 'is_superuser','last_login','last_logout')}),
+        ('Activity', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         # ('Groups', {'fields': ('groups',)}),
         # ('Permissions', {'fields': ('user_permissions',)}),
     )
