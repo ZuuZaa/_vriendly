@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'x!=_=g)3kz4w*pt&+*h=32ku0=wnopu^=-&y@6w6amln-sr@me'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'x!=_=g)3kz4w*pt&+*h=32ku0=wnopu^=-&y@6w6amln-sr@me')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = FAlse
 DATABASES = { 'default' : dj_database_url.config()}
 DATABASES['default'] = dj_database_url.parse('postgres://ombcknsqbvvxgv:d0ae70a9af0a8ad4e0442e705f935e57eed0e991a48c87d72c5591d40835f1b1@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d278ja54gd83aj', conn_max_age=600)
 
@@ -34,6 +34,8 @@ LOCALE_PATHS = [ os.path.join(BASE_DIR, 'locale')]
 # Application definition
 
 INSTALLED_APPS = [
+    #'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,11 +120,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-# https://warehouse.python.org/project/whitenoise/
+#Static files (CSS, JavaScript, Images)
+#https://docs.djangoproject.com/en/3.0/howto/static-files/
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"),] 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 

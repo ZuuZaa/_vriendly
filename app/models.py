@@ -1,6 +1,14 @@
 from django.db import models
 
 # Create your models here.
+class Master_IP(models.Model):
+
+    master_IP = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = 'Master IP'
+        verbose_name_plural = 'Master IP'
+
 class MyApp(models.Model):
 
     name = models.CharField(max_length=200)
@@ -8,6 +16,7 @@ class MyApp(models.Model):
     download_link_for_windows = models.CharField(max_length=200)
     download_link_for_linux = models.CharField(max_length=200)
     download_link_for_macos = models.CharField(max_length=200)
+    master_IP = models.ForeignKey(Master_IP, on_delete = models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'App'
@@ -16,11 +25,5 @@ class MyApp(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class Manager_ID(models.Model):
 
-    manager_id = models.CharField(max_length=200)
-
-    class Meta:
-        verbose_name = 'Manager ID'
-        verbose_name_plural = 'Manager ID'
     

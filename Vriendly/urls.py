@@ -17,7 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    #path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('user/', include('account.urls')),
 ]
+
+admin.site.site_title = 'VRIENDLY'
+admin.site.site_header = 'Vriendly Admin'
+admin.site.index_title = 'Admin'
