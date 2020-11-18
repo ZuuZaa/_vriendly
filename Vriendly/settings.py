@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'account.apps.AccountConfig',
     'app.apps.AppConfig',
+    'analytics.apps.AnalyticsConfig',
 ]
 
 MIDDLEWARE = [
